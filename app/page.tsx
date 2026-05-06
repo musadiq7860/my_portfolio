@@ -7,6 +7,7 @@ import { GitHubSection } from "@/components/github-section"
 import { EducationSection } from "@/components/education-section"
 import { ContactSection } from "@/components/contact-section"
 import { Footer } from "@/components/footer"
+import { BackToTop } from "@/components/back-to-top"
 
 export default function Home() {
   return (
@@ -20,6 +21,7 @@ export default function Home() {
       <EducationSection />
       <ContactSection />
       <Footer />
+      <BackToTop />
     </main>
   )
 }

@@ -43,22 +43,13 @@ const experience = [
     skills: ["Machine Learning", "Data Preprocessing", "EDA", "Python", "Model Optimization"],
   },
   {
-    title: "Machine Learning Engineer",
-    company: "Freelance",
+    title: "Freelance Machine Learning Engineer",
+    company: "Freelance & Freelancer.com",
     location: "Remote",
-    period: "Sep 2023 — Present",
+    period: "Jul 2023 — Present",
     description:
-      "Designed and deployed machine learning models in Python using Scikit-learn for classification and regression tasks such as salary prediction and student performance analysis.",
-    skills: ["Python", "Scikit-learn", "Classification", "Regression", "Data Analysis"],
-  },
-  {
-    title: "Machine Learning Model Developer",
-    company: "Freelancer.com",
-    location: "Remote",
-    period: "Jul 2023 — Jul 2025",
-    description:
-      "Developed and fine-tuned machine learning models for predictive analytics, including student performance prediction and salary forecasting using Python and Scikit-learn.",
-    skills: ["Machine Learning Algorithms", "Python", "Predictive Analytics", "Model Fine-tuning"],
+      "Designed, developed, and deployed 10+ ML models for clients worldwide. Projects include salary prediction systems, student performance analyzers, healthcare diagnostic classifiers, and business analytics dashboards using Python, Scikit-learn, and TensorFlow.",
+    skills: ["Python", "Scikit-learn", "TensorFlow", "Classification", "Regression", "Predictive Analytics"],
   },
   {
     title: "AI Algorithm Engineer",

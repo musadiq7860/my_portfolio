@@ -1,21 +1,76 @@
 "use client"
 
-import { ArrowDown, Github, Linkedin, Mail } from "lucide-react"
+import { ArrowDown, Github, Linkedin, Mail, Download } from "lucide-react"
 import Link from "next/link"
 import { useEffect, useState } from "react"
+import { motion } from "framer-motion"
 
-const roles = ["Software Engineer", "AI Engineer", "ML Engineer", "Full Stack Developer"]
+const roles = ["AI Engineer", "Full Stack Developer", "ML Engineer", "Software Engineer"]
 
 const terminalCommands = [
   { prompt: "~", command: "whoami", output: "Muhammad Musadiq" },
-  { prompt: "~", command: "cat skills.txt", output: "Python, TensorFlow, React, Flutter, Node.js" },
-  { prompt: "~", command: "echo $CURRENT_FOCUS", output: "Building intelligent applications with AI/ML" },
+  { prompt: "~", command: "cat skills.txt", output: "Python, TensorFlow, React, Next.js, FastAPI" },
+  { prompt: "~", command: "echo $CURRENT_FOCUS", output: "Building AI-powered apps that solve real problems" },
   {
     prompt: "~",
     command: "cat motto.txt",
     output: '"Concepts are seeds, but action is the soil where they flourish."',
   },
 ]
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.3,
+    },
+  },
+} as const
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30, filter: "blur(10px)" },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: {
+      type: "spring" as const,
+      stiffness: 100,
+      damping: 15,
+    },
+  },
+}
+
+const terminalVariants = {
+  hidden: { opacity: 0, x: 60, rotateY: -15 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    rotateY: 0,
+    transition: {
+      type: "spring" as const,
+      stiffness: 60,
+      damping: 20,
+      delay: 0.8,
+    },
+  },
+}
+
+const socialButtonVariants = {
+  hidden: { opacity: 0, scale: 0 },
+  visible: (i: number) => ({
+    opacity: 1,
+    scale: 1,
+    transition: {
+      type: "spring" as const,
+      stiffness: 200,
+      damping: 15,
+      delay: 1.0 + i * 0.1,
+    },
+  }),
+}
 
 export function HeroSection() {
   const [currentRoleIndex, setCurrentRoleIndex] = useState(0)
@@ -60,7 +115,6 @@ export function HeroSection() {
 
   useEffect(() => {
     if (currentCommandIndex >= terminalCommands.length) {
-      // Loop back after delay
       const timeout = setTimeout(() => {
         setTerminalLines([])
         setCurrentCommandIndex(0)
@@ -73,14 +127,12 @@ export function HeroSection() {
     const currentCmd = terminalCommands[currentCommandIndex]
 
     if (isTypingCommand) {
-      // Typing the command
       if (currentTypingText.length < currentCmd.command.length) {
         const timeout = setTimeout(() => {
           setCurrentTypingText(currentCmd.command.substring(0, currentTypingText.length + 1))
         }, 80)
         return () => clearTimeout(timeout)
       } else {
-        // Finished typing command, show output
         const timeout = setTimeout(() => {
           setTerminalLines((prev) => [
             ...prev,
@@ -127,75 +179,121 @@ export function HeroSection() {
 
       <div className="max-w-6xl w-full relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left side - Text content */}
-          <div className="space-y-6">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 border border-primary/20 rounded-full">
-              <span className="w-2 h-2 bg-accent rounded-full animate-pulse" />
-              <span className="text-xs font-mono text-primary">Available for opportunities</span>
-            </div>
+          {/* Left side - Text content with staggered animations */}
+          <motion.div
+            className="space-y-6"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <motion.div
+              variants={itemVariants}
+              className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 border border-primary/20 rounded-full"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
+              </span>
+              <span className="text-xs font-mono text-primary">Open to freelance & full-time</span>
+            </motion.div>
 
-            <p className="text-primary font-mono text-sm tracking-wide">Hello, I'm</p>
-            <h1 className="text-5xl md:text-7xl font-bold text-foreground leading-tight text-balance">
+            <motion.p variants={itemVariants} className="text-primary font-mono text-sm tracking-wide">
+              Hello, I&apos;m
+            </motion.p>
+
+            <motion.h1
+              variants={itemVariants}
+              className="text-5xl md:text-7xl font-bold text-foreground leading-tight text-balance"
+            >
               Muhammad{" "}
               <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Musadiq</span>
-            </h1>
-            <h2 className="text-2xl md:text-3xl text-muted-foreground font-medium h-10">
+            </motion.h1>
+
+            <motion.h2 variants={itemVariants} className="text-2xl md:text-3xl text-muted-foreground font-medium h-10">
               <span className="text-primary">{displayText}</span>
               <span className="animate-pulse text-primary">|</span>
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-xl leading-relaxed">
-              I build intelligent applications and full-stack solutions. Passionate about{" "}
-              <span className="text-primary font-medium">Machine Learning</span>,{" "}
-              <span className="text-accent font-medium">Artificial Intelligence</span>, and creating impactful software
-              that solves real-world problems.
-            </p>
+            </motion.h2>
 
-            <div className="flex items-center gap-4 pt-4">
-              <Link
-                href="https://github.com/musadiq7860"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-3 bg-card border border-border rounded-lg text-muted-foreground hover:text-primary hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1"
-                aria-label="GitHub"
-              >
-                <Github size={20} />
-              </Link>
-              <Link
-                href="https://www.linkedin.com/in/muhammad-musaddaq-qaysir-99a17425a"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-3 bg-card border border-border rounded-lg text-muted-foreground hover:text-primary hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1"
-                aria-label="LinkedIn"
-              >
-                <Linkedin size={20} />
-              </Link>
-              <Link
-                href="mailto:muhammadmusadiq7860@gmail.com"
-                className="p-3 bg-card border border-border rounded-lg text-muted-foreground hover:text-primary hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1"
-                aria-label="Email"
-              >
-                <Mail size={20} />
-              </Link>
-              <Link
-                href="#contact"
-                className="ml-4 px-6 py-3 bg-primary text-primary-foreground font-medium rounded-lg hover:bg-primary/90 transition-all duration-300 hover:shadow-lg hover:shadow-primary/25 hover:-translate-y-1"
-              >
-                Get in Touch
-              </Link>
-            </div>
-          </div>
+            <motion.p variants={itemVariants} className="text-lg text-muted-foreground max-w-xl leading-relaxed">
+              I build AI-powered applications — from{" "}
+              <span className="text-primary font-medium">crop disease detectors</span> used by Pakistani farmers to{" "}
+              <span className="text-accent font-medium">full-stack automation tools</span> deployed on Vercel and
+              HuggingFace.
+            </motion.p>
 
-          <div className="relative">
+            <motion.div variants={itemVariants} className="flex items-center gap-3 pt-4 flex-wrap">
+              {[
+                {
+                  href: "https://github.com/musadiq7860",
+                  icon: Github,
+                  label: "GitHub",
+                  external: true,
+                },
+                {
+                  href: "https://www.linkedin.com/in/muhammad-musaddaq-qaysir-99a17425a",
+                  icon: Linkedin,
+                  label: "LinkedIn",
+                  external: true,
+                },
+                {
+                  href: "mailto:muhammadmusadiq7860@gmail.com",
+                  icon: Mail,
+                  label: "Email",
+                  external: false,
+                },
+              ].map((social, i) => (
+                <motion.div key={social.label} custom={i} variants={socialButtonVariants}>
+                  <Link
+                    href={social.href}
+                    target={social.external ? "_blank" : undefined}
+                    rel={social.external ? "noopener noreferrer" : undefined}
+                    className="p-3 bg-card border border-border rounded-lg text-muted-foreground hover:text-primary hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1 inline-block"
+                    aria-label={social.label}
+                  >
+                    <social.icon size={20} />
+                  </Link>
+                </motion.div>
+              ))}
+
+              <motion.div custom={3} variants={socialButtonVariants}>
+                <Link
+                  href="#contact"
+                  className="ml-1 px-6 py-3 bg-primary text-primary-foreground font-medium rounded-lg hover:bg-primary/90 transition-all duration-300 hover:shadow-lg hover:shadow-primary/25 hover:-translate-y-1 inline-block"
+                >
+                  Get in Touch
+                </Link>
+              </motion.div>
+
+              <motion.div custom={4} variants={socialButtonVariants}>
+                <Link
+                  href="#"
+                  className="px-6 py-3 border border-border text-muted-foreground font-medium rounded-lg hover:border-primary/50 hover:text-primary transition-all duration-300 hover:-translate-y-1 inline-flex items-center gap-2"
+                >
+                  <Download size={16} />
+                  Resume
+                </Link>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+
+          {/* Terminal with 3D entrance */}
+          <motion.div
+            className="relative"
+            variants={terminalVariants}
+            initial="hidden"
+            animate="visible"
+            style={{ perspective: 1000 }}
+          >
             {/* Glow effect behind terminal */}
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-accent/20 rounded-2xl blur-2xl transform scale-95" />
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-accent/20 rounded-2xl blur-2xl transform scale-95 animate-glow-pulse" />
 
             <div className="relative bg-card/80 backdrop-blur-xl border border-border rounded-2xl overflow-hidden shadow-2xl">
               {/* Terminal header */}
               <div className="flex items-center gap-2 px-4 py-3 bg-secondary/50 border-b border-border">
                 <div className="flex gap-2">
-                  <div className="w-3 h-3 rounded-full bg-red-500/80" />
-                  <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-                  <div className="w-3 h-3 rounded-full bg-green-500/80" />
+                  <div className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors" />
+                  <div className="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors" />
+                  <div className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors" />
                 </div>
                 <span className="ml-4 text-xs font-mono text-muted-foreground">musadiq@portfolio:~</span>
               </div>
@@ -204,7 +302,13 @@ export function HeroSection() {
               <div className="p-4 font-mono text-sm min-h-[280px] max-h-[280px] overflow-hidden">
                 {/* Previous lines */}
                 {terminalLines.map((line, index) => (
-                  <div key={index} className="mb-1">
+                  <motion.div
+                    key={index}
+                    className="mb-1"
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
                     {line.type === "command" ? (
                       <div className="flex items-center gap-2">
                         <span className="text-accent">musadiq</span>
@@ -217,7 +321,7 @@ export function HeroSection() {
                     ) : (
                       <div className="text-muted-foreground pl-4 border-l-2 border-primary/30 ml-2">{line.text}</div>
                     )}
-                  </div>
+                  </motion.div>
                 ))}
 
                 {/* Current typing line */}
@@ -236,10 +340,15 @@ export function HeroSection() {
                 )}
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
 
-        <div className="flex justify-center mt-16">
+        <motion.div
+          className="flex justify-center mt-16"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.8, duration: 0.6 }}
+        >
           <Link
             href="#about"
             className="inline-flex flex-col items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors group"
@@ -249,7 +358,7 @@ export function HeroSection() {
               <ArrowDown size={16} className="animate-bounce" />
             </div>
           </Link>
-        </div>
+        </motion.div>
       </div>
     </section>
   )

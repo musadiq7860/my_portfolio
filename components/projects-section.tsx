@@ -292,15 +292,6 @@ export function ProjectsSection() {
                         <Github size={16} />
                         View on GitHub
                       </Link>
-                      <Link
-                        href={featuredProject.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-4 py-2 border border-border rounded-lg hover:border-primary/50 hover:text-primary transition-all duration-300 text-sm font-medium text-muted-foreground"
-                      >
-                        <ExternalLink size={16} />
-                        Live Demo
-                      </Link>
                     </div>
                   </div>
                 </div>

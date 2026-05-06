@@ -29,8 +29,8 @@ const skillCategories = [
   {
     title: "Mobile Development",
     skills: [
-      "React",
       "React Native",
+      "Expo",
       "Flutter",
       "Dart",
       "Firebase",
