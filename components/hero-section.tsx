@@ -265,15 +265,14 @@ export function HeroSection() {
               </motion.div>
 
               <motion.div custom={4} variants={socialButtonVariants}>
-                <Link
-                  href="https://www.linkedin.com/in/muhammad-musaddaq-qaysir-99a17425a"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <a
+                  href="/Musadiq_CV.pdf"
+                  download="Muhammad_Musadiq_CV.pdf"
                   className="px-6 py-3 border border-border text-muted-foreground font-medium rounded-lg hover:border-primary/50 hover:text-primary transition-all duration-300 hover:-translate-y-1 inline-flex items-center gap-2"
                 >
                   <Download size={16} />
                   Resume
-                </Link>
+                </a>
               </motion.div>
             </motion.div>
           </motion.div>
