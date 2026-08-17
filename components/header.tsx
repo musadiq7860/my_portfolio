@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Menu, X } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
+import { usePastHero } from "@/hooks/use-past-hero"
 
 const navItems = [
   { name: "About", href: "#about" },
@@ -15,17 +16,9 @@ const navItems = [
 ]
 
 export function Header() {
-  const [isScrolled, setIsScrolled] = useState(false)
+  const pastHero = usePastHero()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState("")
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
-    }
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
 
   // Active section highlighting with IntersectionObserver
   useEffect(() => {
@@ -53,11 +46,13 @@ export function Header() {
   return (
     <motion.header
       initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ type: "spring" as const, stiffness: 100, damping: 20, delay: 0.1 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? "bg-background/80 backdrop-blur-md border-b border-border" : "bg-transparent"
-      }`}
+      animate={{
+        y: pastHero ? 0 : -100,
+        opacity: pastHero ? 1 : 0,
+      }}
+      transition={{ type: "spring" as const, stiffness: 100, damping: 20 }}
+      className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border"
+      style={{ pointerEvents: pastHero ? "auto" : "none" }}
     >
       <nav className="max-w-6xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">

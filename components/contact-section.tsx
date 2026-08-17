@@ -3,7 +3,8 @@
 import { Mail, Linkedin, Github, MapPin, Send } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { AnimatedSection } from "./animated-section"
+import { motion } from "framer-motion"
+import { EASE, staggerContainer, viewportOnce, ambientGlowBackground } from "@/lib/motion"
 
 const contactLinks = [
   {
@@ -26,30 +27,53 @@ const contactLinks = [
   },
 ]
 
+const linkVariants = {
+  hidden: { opacity: 0, x: 24 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: EASE } },
+}
+
 export function ContactSection() {
   return (
-    <section id="contact" className="py-24 px-6 bg-card/30">
-      <div className="max-w-4xl mx-auto">
+    <section id="contact" className="relative py-24 px-6 bg-card/30 overflow-hidden">
+      <div className="ambient-glow absolute -inset-1/4 opacity-30 pointer-events-none" style={{ background: ambientGlowBackground }} aria-hidden />
+      <div className="relative max-w-4xl mx-auto">
         <div className="grid md:grid-cols-[200px_1fr] gap-8">
-          <AnimatedSection direction="left">
-            <h2 className="text-sm font-mono text-primary uppercase tracking-wider">Contact</h2>
-          </AnimatedSection>
-          <div className="space-y-8">
-            <AnimatedSection delay={100}>
-              <div className="space-y-4">
-                <p className="text-2xl text-foreground font-medium text-balance">
-                  Interested in working together or have a project in mind?
-                </p>
-                <p className="text-muted-foreground leading-relaxed">
-                  I'm always open to discussing new opportunities, collaborations, or just having a chat about
-                  technology and software development. Feel free to reach out!
-                </p>
-              </div>
-            </AnimatedSection>
+          <motion.h2
+            initial={{ opacity: 0, x: -16 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={viewportOnce}
+            transition={{ duration: 0.6, ease: EASE }}
+            className="text-sm font-mono text-primary uppercase tracking-wider"
+          >
+            Contact
+          </motion.h2>
 
-            <div className="flex flex-col gap-4">
-              {contactLinks.map((link, index) => (
-                <AnimatedSection key={link.name} delay={200 + index * 100} direction="right">
+          <div className="space-y-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={viewportOnce}
+              transition={{ duration: 0.6, ease: EASE }}
+              className="space-y-4"
+            >
+              <p className="text-2xl text-foreground font-medium text-balance">
+                Interested in working together or have a project in mind?
+              </p>
+              <p className="text-muted-foreground leading-relaxed">
+                I&apos;m always open to discussing new opportunities, collaborations, or just having a chat about
+                technology and software development. Feel free to reach out!
+              </p>
+            </motion.div>
+
+            <motion.div
+              variants={staggerContainer(0.1, 0.1)}
+              initial="hidden"
+              whileInView="visible"
+              viewport={viewportOnce}
+              className="flex flex-col gap-4"
+            >
+              {contactLinks.map((link) => (
+                <motion.div key={link.name} variants={linkVariants}>
                   <Link
                     href={link.href}
                     target={link.href.startsWith("http") ? "_blank" : undefined}
@@ -64,28 +88,41 @@ export function ContactSection() {
                       <p className="text-foreground group-hover:text-primary transition-colors">{link.value}</p>
                     </div>
                   </Link>
-                </AnimatedSection>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
 
-            <AnimatedSection delay={500}>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <MapPin size={16} className="animate-bounce" />
-                <span>Open to remote opportunities worldwide</span>
-              </div>
-            </AnimatedSection>
-
-            <AnimatedSection delay={600}>
-              <Button
-                asChild
-                className="bg-primary text-primary-foreground hover:bg-primary/90 hover:scale-105 transition-transform"
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={viewportOnce}
+              transition={{ duration: 0.5, delay: 0.4, ease: EASE }}
+              className="flex items-center gap-2 text-sm text-muted-foreground"
+            >
+              <motion.span
+                animate={{ y: [0, -3, 0] }}
+                transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
               >
-                <Link href="mailto:muhammadmusadiq7860@gmail.com">
-                  <Send size={16} className="mr-2" />
-                  Get In Touch
-                </Link>
-              </Button>
-            </AnimatedSection>
+                <MapPin size={16} />
+              </motion.span>
+              <span>Open to remote opportunities worldwide</span>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={viewportOnce}
+              transition={{ duration: 0.5, delay: 0.5, ease: EASE }}
+            >
+              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.98 }} className="inline-block">
+                <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
+                  <Link href="mailto:muhammadmusadiq7860@gmail.com">
+                    <Send size={16} className="mr-2" />
+                    Get In Touch
+                  </Link>
+                </Button>
+              </motion.div>
+            </motion.div>
           </div>
         </div>
       </div>
