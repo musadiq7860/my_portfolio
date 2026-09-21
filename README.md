@@ -14,11 +14,7 @@ Your project is live at:
 
 **[https://vercel.com/muhammadmusadiq7860-5387s-projects/v0-portfolio-website-content](https://vercel.com/muhammadmusadiq7860-5387s-projects/v0-portfolio-website-content)**
 
-## Build your app
 
-Continue building your app on:
-
-**[https://v0.app/chat/tQghZlt8Drg](https://v0.app/chat/tQghZlt8Drg)**
 
 ## How It Works
 
